@@ -1,0 +1,30 @@
+hello,         world!
+I love you, JAVA!
+WHAT???    you are JavaScript???
+That does not matter! I love you too!
+WTF??? why  do you  come here, JAVA???
+register JAVA
+registre JAVASCRIPT
+register   22373000 dsad    fafdsfs dsadqer
+register 22373000   dsad  fafdsfs dsadqer Studesnt
+register 22373001 D_sad  Aa123@ Aa123@ Studesnt
+register 22373001    Mu_Jue 123 321    1234567
+register     22373001 Mu_Jue     123Aa@ 123Aa@ Student
+HASH                      LAMA!!!
+liogn 22373001 123Aa@
+login 22373001 124Aa@ FU
+login 22373001 124Aa@
+login 22373001 123Aa@
+login 22373001 123Aa@
+logout
+login 22373001 123Aa@
+login 22373001 123Aa@
+logout
+logout
+login 22373001 123Aa@
+printInfo 1234567
+printfInfo 22370001
+printInfo
+logout
+login 22373001 123Aa@
+quit

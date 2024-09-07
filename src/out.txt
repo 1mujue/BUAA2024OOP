@@ -1,0 +1,33 @@
+Command 'hello,' not found
+Command 'I' not found
+Command 'WHAT???' not found
+Command 'That' not found
+Command 'WTF???' not found
+Illegal argument count
+Command 'registre' not found
+Illegal argument count
+Illegal user id
+Illegal identity
+Illegal password
+Register success
+Command 'HASH' not found
+Command 'liogn' not found
+Illegal argument count
+Wrong password
+Welcome to ACP, 22373001
+22373001 is online
+22373001 Bye~
+Welcome to ACP, 22373001
+22373001 is online
+22373001 Bye~
+No one is online
+Welcome to ACP, 22373001
+Permission denied
+Command 'printfInfo' not found
+User id: 22373001
+Name: Mu_Jue
+Type: Student
+22373001 Bye~
+Welcome to ACP, 22373001
+22373001 Bye~
+----- Good Bye! -----
