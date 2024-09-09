@@ -1,5 +1,6 @@
 package commands;
 
+import entity.tokens.UserId;
 import enums.REQUIRED_COUNT;
 import exceptions.ExecutionException;
 import exceptions.ValidationException;
@@ -9,7 +10,9 @@ import validators.ArgumentCountValidator;
 import validators.PermissionValidator;
 import validators.StateValidator;
 
+import java.security.KeyPair;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -19,9 +22,9 @@ import java.util.List;
  * &#064;Created MuJue
  */
 public class LogoutCommand extends BaseCommand{
+    private UserId userId;
     @Override
     public void execute() throws ExecutionException {
-        int count = parameters.size();
         String message;
         if(count == 0){
             message = noArgsExecute();
@@ -36,15 +39,13 @@ public class LogoutCommand extends BaseCommand{
     }
     public String adminArgsExecute() throws ExecutionException{
         UserExecutor userExecutor = UserExecutor.getInstance();
-        String uid = parameters.get(0);
-        return userExecutor.logout(uid);
+        return userExecutor.logout(userId.getValue());
     }
 
     @Override
     public void validate() throws ValidationException {
-        int count = parameters.size();
         ArgumentCountValidator argumentCountValidator = ArgumentCountValidator.getInstance();
-        argumentCountValidator.legalityValidate(count, REQUIRED_COUNT.LOGOUT_COUNT);
+        argumentCountValidator.legalityValidate(count, "logout");
 
         StateValidator stateValidator = StateValidator.getInstance();
         stateValidator.onlineValidate();
@@ -56,21 +57,20 @@ public class LogoutCommand extends BaseCommand{
         }
     }
     private void noArgsValidate() throws ValidationException{
-        List<String> permissions = new ArrayList<>();
-        permissions.add("Student");
-        permissions.add("Teacher");
-        permissions.add("Administrator");
         PermissionValidator permissionValidator = PermissionValidator.getInstance();
-        permissionValidator.legalityValidate(permissions);
+        permissionValidator.legalityValidate(Arrays.asList(
+                "Student",
+                "Teacher",
+                "Administrator"
+        ));
     }
     private void adminArgsValidate() throws ValidationException{
-        List<String> permissions = new ArrayList<>();
-        permissions.add("Administrator");
         PermissionValidator permissionValidator = PermissionValidator.getInstance();
-        permissionValidator.legalityValidate(permissions);
+        permissionValidator.legalityValidate(List.of("Administrator"));
 
-        String uid = parameters.get(0);
+        userId = new UserId(parameters.get(0));
+
         StateValidator stateValidator = StateValidator.getInstance();
-        stateValidator.onlineValidate(uid);
+        stateValidator.onlineValidate(userId.getValue());
     }
 }

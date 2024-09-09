@@ -1,30 +1,28 @@
-hello,         world!
-I love you, JAVA!
-WHAT???    you are JavaScript???
-That does not matter! I love you too!
-WTF??? why  do you  come here, JAVA???
-register JAVA
-registre JAVASCRIPT
-register   22373000 dsad    fafdsfs dsadqer
-register 22373000   dsad  fafdsfs dsadqer Studesnt
-register 22373001 D_sad  Aa123@ Aa123@ Studesnt
-register 22373001    Mu_Jue 123 321    1234567
-register     22373001 Mu_Jue     123Aa@ 123Aa@ Student
-HASH                      LAMA!!!
-liogn 22373001 123Aa@
-login 22373001 124Aa@ FU
-login 22373001 124Aa@
-login 22373001 123Aa@
-login 22373001 123Aa@
+register 22373001 Mu_Jue Aa123@ Aa123@ Student
+register 00001 T_ea Bb123$ Bb123$ Teacher
+login 22373001 Aa123@
+createCourse OO 4_3-4 3.0 48
 logout
-login 22373001 123Aa@
-login 22373001 123Aa@
+login 00001 Bb123$
+createCourse 8*&&@!
+createCourse _OO 4_3-4 3.0 48
+createCourse A*XXXX 1_2-3 4.5 72
+createCourse OO 4_3-4 3.0 48
+createCourse CO 5_3-4 4.5 72
+listCourse
+logout 
+login 22373001 Aa123@
+listCourse
+selectCourse C-0
+selectCourse C-2222222
+selectCourse C-1
+selectCourse C-2
+logout 
+login 00001 Bb123$
+cancelCourse C-0
+cancelCourse C-1
+listCourse 
 logout
-logout
-login 22373001 123Aa@
-printInfo 1234567
-printfInfo 22370001
-printInfo
-logout
-login 22373001 123Aa@
+login 22373001 Aa123@
+listCourse
 quit

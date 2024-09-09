@@ -1,16 +1,16 @@
 package commands;
 
-import enums.REQUIRED_COUNT;
+import entity.User;
+import entity.tokens.Password;
+import entity.tokens.UserId;
 import exceptions.ExecutionException;
 import exceptions.ValidationException;
 import executors.UserExecutor;
 import utils.Outputer;
 import validators.ArgumentCountValidator;
-import validators.IdValidator;
 import validators.PasswordValidator;
 import validators.StateValidator;
-
-import java.util.List;
+import validators.UserValidator;
 
 /**
  * &#064;Classname LoginCommand
@@ -19,32 +19,32 @@ import java.util.List;
  * &#064;Created MuJue
  */
 public class LoginCommand extends BaseCommand{
+    private UserId userId;
+    private Password password;
     @Override
     public void execute() throws ExecutionException {
         UserExecutor userExecutor = UserExecutor.getInstance();
-        String uid = parameters.get(0);
-        String message = userExecutor.login(uid);
+        String message = userExecutor.login(userId.getValue());
         Outputer.PRINT(message);
     }
 
     @Override
     public void validate() throws ValidationException {
         ArgumentCountValidator argumentCountValidator = ArgumentCountValidator.getInstance();
-        argumentCountValidator.legalityValidate(parameters.size(), REQUIRED_COUNT.LOGIN_COUNT);
+        argumentCountValidator.legalityValidate(count, "login");
 
-        IdValidator idValidator = IdValidator.getInstance();
-        idValidator.legalityValidate(parameters.get(0));
+        userId = new UserId(parameters.get(0));
+        password = new Password(parameters.get(1));
+
+        UserValidator userValidator = UserValidator.getInstance();
+        userValidator.userTokenValidate(userId);
 
         StateValidator stateValidator = StateValidator.getInstance();
-        stateValidator.loginConflictValidate(parameters.get(0));
+        stateValidator.loginConflictValidate(userId.getValue());
 
-        try {
-            idValidator.existenceValidate(parameters.get(0));
-        } catch (ValidationException e) {
-            PasswordValidator passwordValidator = PasswordValidator.getInstance();
-            passwordValidator.rightPasswordValidate(parameters.get(1), parameters.get(0));
-            return ;
-        }
-        throw new ValidationException("User id does not exists\n");
+        userValidator.userIdExistenceValidate(userId.getValue());
+
+        PasswordValidator passwordValidator = PasswordValidator.getInstance();
+        passwordValidator.rightPasswordValidate(password.getValue(), userId.getValue());
     }
 }

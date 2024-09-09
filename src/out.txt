@@ -1,33 +1,31 @@
-Command 'hello,' not found
-Command 'I' not found
-Command 'WHAT???' not found
-Command 'That' not found
-Command 'WTF???' not found
-Illegal argument count
-Command 'registre' not found
-Illegal argument count
-Illegal user id
-Illegal identity
-Illegal password
 Register success
-Command 'HASH' not found
-Command 'liogn' not found
-Illegal argument count
-Wrong password
-Welcome to ACP, 22373001
-22373001 is online
-22373001 Bye~
-Welcome to ACP, 22373001
-22373001 is online
-22373001 Bye~
-No one is online
+Register success
 Welcome to ACP, 22373001
 Permission denied
-Command 'printfInfo' not found
-User id: 22373001
-Name: Mu_Jue
-Type: Student
 22373001 Bye~
+Welcome to ACP, 00001
+Illegal argument count
+Illegal course name
+Illegal course name
+Create course success (courseId: C-1)
+Create course success (courseId: C-2)
+C-1 OO 4_3-4 3.0 48
+C-2 CO 5_3-4 4.5 72
+00001 Bye~
 Welcome to ACP, 22373001
+T_ea C-1 OO 4_3-4 3.0 48
+T_ea C-2 CO 5_3-4 4.5 72
+Course does not exist
+Course does not exist
+Select course success
+Select course success
+22373001 Bye~
+Welcome to ACP, 00001
+Cancel course success
+Cancel course success
+C-2 CO 5_3-4 4.5 72
+00001 Bye~
+Welcome to ACP, 22373001
+T_ea C-2 CO 5_3-4 4.5 72
 22373001 Bye~
 ----- Good Bye! -----

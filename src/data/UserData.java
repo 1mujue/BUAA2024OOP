@@ -1,6 +1,6 @@
 package data;
 
-import users.User;
+import entity.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +12,8 @@ import java.util.List;
  * &#064;Created MuJue
  */
 public class UserData {
-    private final List<User> users = new ArrayList<>();
-    private final List<String> loginUsers = new ArrayList<>();
+    private static final List<User> users = new ArrayList<>();
+    private static final List<String> loginUsers = new ArrayList<>();
     private static final UserData userData = new UserData();
     private UserData(){;}
 

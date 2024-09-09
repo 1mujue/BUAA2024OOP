@@ -1,9 +1,11 @@
 package commands;
 
+import enums.REQUIRED_COUNT;
 import exceptions.ExecutionException;
 import exceptions.ValidationException;
 import executors.UserExecutor;
 import utils.Outputer;
+import validators.ArgumentCountValidator;
 
 import java.util.List;
 
@@ -23,6 +25,7 @@ public class QuitCommand extends BaseCommand{
 
     @Override
     public void validate() throws ValidationException {
-        return ;
+        ArgumentCountValidator argumentCountValidator = ArgumentCountValidator.getInstance();
+        argumentCountValidator.legalityValidate(count, "quit");
     }
 }

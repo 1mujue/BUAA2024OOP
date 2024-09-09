@@ -4,10 +4,7 @@ import utils.CommandExecutor;
 import utils.Outputer;
 import utils.ScannerBuilder;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * &#064;Classname Test
@@ -32,10 +29,12 @@ public class Test {
         while(scanner.hasNextLine()){
             String line = scanner.nextLine();
             String[] tmp = line.split("\\s+");
-            parameters.clear();
-            parameters.addAll(Arrays.asList(tmp));
-            BaseCommand command = commandAnalyzer.analyzeCommand(parameters);
-            commandExecutor.executeCommand(command);
+            if(!Objects.equals(tmp[0], "")){
+                parameters.clear();
+                parameters.addAll(Arrays.asList(tmp));
+                BaseCommand command = commandAnalyzer.analyzeCommand(parameters);
+                commandExecutor.executeCommand(command);
+            }
         }
     }
 }

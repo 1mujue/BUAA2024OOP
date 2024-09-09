@@ -1,10 +1,9 @@
 package executors;
 
-import enums.PERMISSION;
 import exceptions.ExecutionException;
 import manipulators.StateManipulator;
 import manipulators.UserManipulator;
-import users.User;
+import entity.User;
 
 import java.util.List;
 
@@ -27,7 +26,7 @@ public class UserExecutor {
         return "Register success\n";
     }
     public String login(String uid) throws ExecutionException{
-        PERMISSION permission = userManipulator.getUserById(uid).getPermission();
+        String permission = userManipulator.getUserById(uid).getPermission();
         stateManipulator.clearState();
         stateManipulator.setStateId(uid);
         stateManipulator.setStatePermission(permission);

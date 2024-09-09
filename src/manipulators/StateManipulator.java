@@ -1,6 +1,5 @@
 package manipulators;
 
-import enums.PERMISSION;
 import entity.State;
 
 /**
@@ -28,11 +27,11 @@ public class StateManipulator {
     public void setStatePermission(String permission){
         state.setPermission(permission);
     }
-    public void setStatePermission(PERMISSION permission){
-        state.setPermission(permission);
+    public String getStatePermission(){
+        return state.getPermission();
     }
     public void clearState(){
         state.setId(null);
-        state.setPermission((PERMISSION) null);
+        state.setPermission(null);
     }
 }

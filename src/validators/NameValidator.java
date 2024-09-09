@@ -12,22 +12,23 @@ import java.util.regex.Pattern;
  * &#064;Created MuJue
  */
 public class NameValidator{
-    private static final String regex = "^(?!_)[a-zA-Z_]{4,16}";
+    private static final String userNameRegex = "[a-zA-Z][a-zA-Z_]{3,15}";
     private static final NameValidator nameValidator = new NameValidator();
     private NameValidator(){;}
     public static NameValidator getInstance(){
         return nameValidator;
     }
 
-    public void legalityValidate(String name) throws ValidationException {
+    public void userNameLegalityValidate(String name) throws ValidationException {
         int length = name.length();
         if(length < 4 || length > 16){
-            throw new ValidationException("Illegal name\n");
+            throw new ValidationException("Illegal user name\n");
         }
-        Pattern r = Pattern.compile(regex);
+        Pattern r = Pattern.compile(userNameRegex);
         Matcher m = r.matcher(name);
         if(!m.matches()){
-            throw new ValidationException("Illegal name\n");
+            throw new ValidationException("Illegal user name\n");
         }
     }
+
 }

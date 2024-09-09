@@ -1,12 +1,13 @@
 package commands;
 
-import enums.PERMISSION;
-import enums.REQUIRED_COUNT;
+import entity.tokens.Password;
+import entity.tokens.Permission;
+import entity.tokens.UserId;
+import entity.tokens.UserName;
 import exceptions.ExecutionException;
 import exceptions.ValidationException;
 import executors.UserExecutor;
-import manipulators.UserManipulator;
-import users.User;
+import entity.User;
 import utils.Outputer;
 import validators.*;
 
@@ -17,17 +18,19 @@ import validators.*;
  * &#064;Created MuJue
  */
 public class RegisterCommand extends BaseCommand{
+    private UserId userId;
+    private UserName userName;
+    private Password password;
+    private Password rePassword;
+    private Permission permission;
     @Override
     public void execute() throws ExecutionException {
         User user = new User();
-        String uid = parameters.get(0);
-        String name = parameters.get(1);
-        String password = parameters.get(2);
-        String permission = parameters.get(4);
-        user.setId(uid);
-        user.setName(name);
-        user.setPassword(password);
-        user.setPermission(PERMISSION.getInstance(permission));
+
+        user.setId(userId.getValue());
+        user.setName(userName.getValue());
+        user.setPassword(password.getValue());
+        user.setPermission(permission.getValue());
 
         UserExecutor userExecutor = UserExecutor.getInstance();
         String message = userExecutor.register(user);
@@ -37,23 +40,27 @@ public class RegisterCommand extends BaseCommand{
     @Override
     public void validate() throws ValidationException {
         ArgumentCountValidator argumentCountValidator = ArgumentCountValidator.getInstance();
-        argumentCountValidator.legalityValidate(
-                parameters.size(), REQUIRED_COUNT.REGISTER_COUNT
-        );
+        argumentCountValidator.legalityValidate(count, "register");
 
-        IdValidator idValidator = IdValidator.getInstance();
-        idValidator.legalityValidate(parameters.get(0));
-        idValidator.existenceValidate(parameters.get(0));
+        userId = new UserId(parameters.get(0));
+        userName = new UserName(parameters.get(1));
+        password = new Password(parameters.get(2));
+        rePassword = new Password(parameters.get(3));
+        permission = new Permission(parameters.get(4));
+
+        UserValidator userValidator = UserValidator.getInstance();
+        userValidator.userTokenValidate(userId);
+        userValidator.userIdRegisterExistenceValidate(userId.getValue());
 
         NameValidator nameValidator = NameValidator.getInstance();
-        nameValidator.legalityValidate(parameters.get(1));
+        nameValidator.userNameLegalityValidate(userName.getValue());
 
         PasswordValidator passwordValidator = PasswordValidator.getInstance();
-        passwordValidator.legalityValidate(parameters.get(2));
+        passwordValidator.legalityValidate(password.getValue());
 
-        passwordValidator.samePasswordValidate(parameters.get(2), parameters.get(3));
+        passwordValidator.samePasswordValidate(password.getValue(), rePassword.getValue());
 
         PermissionValidator permissionValidator = PermissionValidator.getInstance();
-        permissionValidator.existenceValidate(parameters.get(4));
+        permissionValidator.existenceValidate(permission);
     }
 }

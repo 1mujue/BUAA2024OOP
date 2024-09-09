@@ -1,6 +1,4 @@
-package users;
-
-import enums.PERMISSION;
+package entity;
 
 /**
  * &#064;Classname User
@@ -12,7 +10,7 @@ public class User {
     private String id;
     private String name;
     private String password;
-    private PERMISSION permission;
+    private String permission;
 
     public String getId() {
         return id;
@@ -38,11 +36,11 @@ public class User {
         this.password = password;
     }
 
-    public PERMISSION getPermission() {
+    public String getPermission() {
         return permission;
     }
 
-    public void setPermission(PERMISSION permission) {
+    public void setPermission(String permission) {
         this.permission = permission;
     }
 
@@ -50,6 +48,6 @@ public class User {
     public String toString() {
         return "User id: " + id + "\n" +
                 "Name: " + name + "\n" +
-                "Type: " + permission.getName() + "\n";
+                "Type: " + permission + "\n";
     }
 }

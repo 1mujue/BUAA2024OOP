@@ -6,6 +6,7 @@ import manipulators.StateManipulator;
 import entity.State;
 import validators.CommandValidator;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -24,9 +25,10 @@ public class CommandAnalyzer {
         try {
             String commandName = parameters.get(0);
             BaseCommand command = new CommandValidator().getCommand(commandName);
-            command.setParameters(parameters.subList(1, parameters.size()));
-            State state = StateManipulator.getInstance().getState();
-            state.validate(command);
+            int count = parameters.size() ;
+            command.setCount(count - 1);
+            command.setParameters(parameters.subList(1, count));
+            command.validate();
             return command;
         } catch (ValidationException e) {
             Outputer.PRINT(e.getMessage());

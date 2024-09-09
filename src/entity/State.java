@@ -1,10 +1,5 @@
 package entity;
 
-import commands.BaseCommand;
-import enums.PERMISSION;
-import exceptions.ValidationException;
-import validators.PermissionValidator;
-
 /**
  * &#064;Classname State
  * &#064;Description  TODO
@@ -13,7 +8,7 @@ import validators.PermissionValidator;
  */
 public class State {
     private String id = null;
-    private PERMISSION permission = null;
+    private String permission = null;
     private static final State state = new State() ;
     private State(){;}
 
@@ -29,19 +24,11 @@ public class State {
         this.id = id;
     }
 
-    public PERMISSION getPermission() {
+    public String getPermission() {
         return permission;
     }
 
     public void setPermission(String permission) {
-        this.permission = PERMISSION.getInstance(permission);
-    }
-    public void setPermission(PERMISSION permission){
         this.permission = permission;
-    }
-
-    public void validate(BaseCommand command) throws ValidationException{
-        PermissionValidator.getInstance().setCurrentPermission(permission);
-        command.validate();
     }
 }

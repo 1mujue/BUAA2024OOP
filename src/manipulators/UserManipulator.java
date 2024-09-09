@@ -1,8 +1,7 @@
 package manipulators;
 
 import data.UserData;
-import enums.PERMISSION;
-import users.User;
+import entity.User;
 
 import java.util.List;
 

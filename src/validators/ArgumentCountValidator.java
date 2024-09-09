@@ -15,7 +15,8 @@ public class ArgumentCountValidator {
     public static ArgumentCountValidator getInstance(){
         return argumentCountValidator;
     }
-    public void legalityValidate(int currentCount, REQUIRED_COUNT targetCount) throws ValidationException {
+    public void legalityValidate(int currentCount, String commandName) throws ValidationException {
+        REQUIRED_COUNT targetCount = REQUIRED_COUNT.getParameterCount(commandName);
         if(currentCount < targetCount.getLowLimit() || currentCount > targetCount.getHighLimit()){
             throw  new ValidationException("Illegal argument count\n");
         }

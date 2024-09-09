@@ -16,11 +16,18 @@ import java.util.List;
  * &#064;Created MuJue
  */
 public abstract class BaseCommand implements Executable, Validatable {
+    protected int count;
     protected List<String> parameters;
     public List<String> getParameters() {
         return parameters;
     }
+    public int getCount(){
+        return count;
+    }
     public void setParameters(List<String> parameters) {
         this.parameters = parameters;
+    }
+    public void setCount(int count){
+        this.count = count;
     }
 }
