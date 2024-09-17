@@ -17,6 +17,7 @@ import java.util.List;
  */
 public class CommandAnalyzer {
     private static final CommandAnalyzer commandAnalyzer = new CommandAnalyzer();
+    private static final Outputer outputer = Outputer.getInstance();
     public static CommandAnalyzer getInstance(){
         return commandAnalyzer;
     }
@@ -31,7 +32,7 @@ public class CommandAnalyzer {
             command.validate();
             return command;
         } catch (ValidationException e) {
-            Outputer.PRINT(e.getMessage());
+            outputer.PRINT(e.getMessage());
         }
         return null;
     }

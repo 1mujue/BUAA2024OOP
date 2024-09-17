@@ -5,6 +5,7 @@ import manipulators.StateManipulator;
 import manipulators.UserManipulator;
 import entity.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,7 +49,7 @@ public class UserExecutor {
     }
     public String quit() throws ExecutionException{
         List<String> onlineUsers = userManipulator.getOnlineUsers();
-        List<String> tmpOnlineUsers = onlineUsers.subList(0, onlineUsers.size());
+        List<String> tmpOnlineUsers = new ArrayList<>(onlineUsers);
         StringBuilder message = new StringBuilder();
         for(String uid : tmpOnlineUsers){
             message.append(logout(uid));
@@ -58,11 +59,11 @@ public class UserExecutor {
     }
     public String printInfo(String uid) throws ExecutionException{
         User user = userManipulator.getUserById(uid);
-        return user.toString();
+        return user.toString() + "Print information success\n";
     }
     public String printInfo() throws ExecutionException{
         String uid = stateManipulator.getStateId();
         User user = userManipulator.getUserById(uid);
-        return user.toString();
+        return user.toString() + "Print information success\n";
     }
 }

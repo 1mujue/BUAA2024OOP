@@ -1,21 +1,22 @@
-package validators;
+package validators.userValidators;
 
 import exceptions.ValidationException;
+import validators.TokenValidator;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * &#064;Classname NameValidator
+ * &#064;Classname UserNameValidator
  * &#064;Description  TODO
  * &#064;Date 2024/9/4 21:16
  * &#064;Created MuJue
  */
-public class NameValidator{
+public class UserNameValidator extends TokenValidator {
     private static final String userNameRegex = "[a-zA-Z][a-zA-Z_]{3,15}";
-    private static final NameValidator nameValidator = new NameValidator();
-    private NameValidator(){;}
-    public static NameValidator getInstance(){
+    private static final UserNameValidator nameValidator = new UserNameValidator();
+    private UserNameValidator(){;}
+    public static UserNameValidator getInstance(){
         return nameValidator;
     }
 

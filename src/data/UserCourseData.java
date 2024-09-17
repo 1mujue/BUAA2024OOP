@@ -2,6 +2,8 @@ package data;
 
 import javax.print.attribute.HashPrintJobAttributeSet;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * &#064;Classname UserCourseData
@@ -10,17 +12,17 @@ import java.util.HashMap;
  * &#064;Created MuJue
  */
 public class UserCourseData {
-    private static final HashMap<Integer, String> teacherCourse = new HashMap<>();
-    private static final HashMap<Integer, String> studentCourse = new HashMap<>();
+    private static final HashMap<String, List<Integer>> teacherCourse = new HashMap<>();
+    private static final HashMap<String, List<Integer>> studentCourse = new HashMap<>();
     private static final UserCourseData userCourseData = new UserCourseData();
     private UserCourseData(){;}
     public static UserCourseData getInstance(){
         return userCourseData;
     }
-    public HashMap<Integer, String> getTeacherCourse(){
+    public HashMap<String, List<Integer>> getTeacherCourse(){
         return teacherCourse;
     }
-    public HashMap<Integer, String> getStudentCourse(){
+    public HashMap<String, List<Integer>> getStudentCourse(){
         return studentCourse;
     }
 }

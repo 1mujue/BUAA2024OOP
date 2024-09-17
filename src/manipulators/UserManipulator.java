@@ -35,6 +35,15 @@ public class UserManipulator {
         }
         return null;
     }
+    public String getUserPermission(String id){
+        List<User> users = userData.getUsers();
+        for(User user : users){
+            if(user.getId().equals(id)){
+                return user.getPermission();
+            }
+        }
+        return null;
+    }
     public void addUser(User user){
         userData.getUsers().add(user);
     }

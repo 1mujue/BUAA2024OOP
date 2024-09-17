@@ -9,23 +9,23 @@ import commands.*;
  * &#064;Created MuJue
  */
 public enum COMMAND {
-    QUIT("quit", new QuitCommand()),
-    REGISTER("register", new RegisterCommand()),
-    LOGIN("login", new LoginCommand()),
-    LOGOUT("logout", new LogoutCommand()),
-    PRINT_INFO("printInfo", new PrintInfoCommand()),
-    CREATE_COURSE("createCourse", new CreateCourseCommand()),
-    LIST_COURSE("listCourse", new ListCourseCommand()),
-    SELECT_COURSE("selectCourse", new SelectCourseCommand()),
-    CANCEL_COURSE("cancelCourse", new CancelCourseCommand()),
-    REMOVE_STUDENT("removeStudent", new RemoveStudentCommand()),
-    SWITCH("switch", new SwitchCommand()),
-    INPUT_COURSE_BATCH("inputCourseBatch", new InputCourseBatchCommand()),
-    OUTPUT_COURSE_BATCH("outputCourseBatch", new OutputCourseBatchCommand()),
-    LIST_COURSE_SCHEDULE("listCourseSchedule", new ListScheduleCommand()),
-    LIST_STUDENT("listStudent",new ListStudentCommand()),
-    UPLOAD_COURSE_SCHEDULE("uploadCourseSchedule", new UploadCourseScheduleCommand()),
-    OPEN_FILE("openFile", new OpenFileCommand());
+    QUIT("quit", QuitCommand.getInstance()),
+    REGISTER("register", RegisterCommand.getInstance()),
+    LOGIN("login", LoginCommand.getInstance()),
+    LOGOUT("logout", LogoutCommand.getInstance()),
+    PRINT_INFO("printInfo", PrintInfoCommand.getInstance()),
+    CREATE_COURSE("createCourse", CreateCourseCommand.getInstance()),
+    LIST_COURSE("listCourse", ListCourseCommand.getInstance()),
+    SELECT_COURSE("selectCourse", SelectCourseCommand.getInstance()),
+    CANCEL_COURSE("cancelCourse", CancelCourseCommand.getInstance()),
+    REMOVE_STUDENT("removeStudent", RemoveStudentCommand.getInstance()),
+    SWITCH("switch", SwitchCommand.getInstance()),
+    INPUT_COURSE_BATCH("inputCourseBatch", InputCourseBatchCommand.getInstance()),
+    OUTPUT_COURSE_BATCH("outputCourseBatch", OutputCourseBatchCommand.getInstance()),
+    LIST_COURSE_SCHEDULE("listCourseSchedule", ListCourseScheduleCommand.getInstance()),
+    LIST_STUDENT("listStudent",ListStudentCommand.getInstance()),
+    UPLOAD_COURSE_SCHEDULE("uploadCourseSchedule", UploadCourseScheduleCommand.getInstance()),
+    OPEN_FILE("openFile", OpenFileCommand.getInstance());
     private final String name;
     private final BaseCommand command;
     COMMAND(String name, BaseCommand command){

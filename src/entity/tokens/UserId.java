@@ -44,4 +44,61 @@ public class UserId extends Token<String>{
         }
         throw new ValidationException("Illegal user id\n");
     }
+    private boolean isUnderGraduate(){
+        return isUnderGraduate(value);
+    }
+    private boolean isUnderGraduate(String userId){
+        Pattern pattern = Pattern.compile(underGraduate);
+        Matcher matcher = pattern.matcher(userId);
+        return matcher.matches();
+    }
+    private boolean isSYPostGraduate(){
+        return isSYPostGraduate(value);
+    }
+    private boolean isSYPostGraduate(String userId){
+        Pattern pattern = Pattern.compile(SYPostGraduate);
+        Matcher matcher = pattern.matcher(userId);
+        return matcher.matches();
+    }
+    private boolean isZYPostGraduate(){
+        return isZYPostGraduate(value);
+    }
+    private boolean isZYPostGraduate(String userId){
+        Pattern pattern = Pattern.compile(ZYPostGraduate);
+        Matcher matcher = pattern.matcher(userId);
+        return matcher.matches();
+    }
+    private boolean isDoctor(){
+        return isDoctor(value);
+    }
+    private boolean isDoctor(String userId){
+        Pattern pattern = Pattern.compile(doctor);
+        Matcher matcher = pattern.matcher(userId);
+        return matcher.matches();
+    }
+    public int getScore(){
+        if(isDoctor()){
+            return 4;
+        } else if(isSYPostGraduate()){
+            return 3;
+        } else if(isZYPostGraduate()){
+            return 2;
+        } else if (isDoctor()) {
+            return 1;
+        }
+        return 0;
+    }
+    public int getNumber(){
+        int ans = 0;
+        if(isDoctor() || isSYPostGraduate() || isZYPostGraduate()){
+            for(int i = 2;i < 9;++i){
+                ans = ans * 10 + value.charAt(i) - '0';
+            }
+        } else if(isUnderGraduate()){
+            for(int i = 0;i < 8;++i){
+                ans = ans * 10 + value.charAt(i) - '0';
+            }
+        }
+        return ans;
+    }
 }

@@ -1,6 +1,5 @@
 package commands;
 
-import entity.User;
 import entity.tokens.Password;
 import entity.tokens.UserId;
 import exceptions.ExecutionException;
@@ -8,9 +7,9 @@ import exceptions.ValidationException;
 import executors.UserExecutor;
 import utils.Outputer;
 import validators.ArgumentCountValidator;
-import validators.PasswordValidator;
+import validators.userValidators.UserPasswordValidator;
 import validators.StateValidator;
-import validators.UserValidator;
+import validators.userValidators.UserIdValidator;
 
 /**
  * &#064;Classname LoginCommand
@@ -19,13 +18,19 @@ import validators.UserValidator;
  * &#064;Created MuJue
  */
 public class LoginCommand extends BaseCommand{
-    private UserId userId;
-    private Password password;
+    private UserId userId = null;
+    private Password password = null;
+    private static final LoginCommand loginCommand = new LoginCommand();
+    private LoginCommand(){;}
+    public static LoginCommand getInstance(){
+        return loginCommand;
+    }
     @Override
     public void execute() throws ExecutionException {
         UserExecutor userExecutor = UserExecutor.getInstance();
         String message = userExecutor.login(userId.getValue());
-        Outputer.PRINT(message);
+        Outputer outputer = Outputer.getInstance();
+        outputer.PRINT(message);
     }
 
     @Override
@@ -36,15 +41,14 @@ public class LoginCommand extends BaseCommand{
         userId = new UserId(parameters.get(0));
         password = new Password(parameters.get(1));
 
-        UserValidator userValidator = UserValidator.getInstance();
-        userValidator.userTokenValidate(userId);
+        UserIdValidator userIdValidator = UserIdValidator.getInstance();
+        userIdValidator.tokenValidate(userId);
+        userIdValidator.userIdExistenceValidate(userId.getValue());
 
         StateValidator stateValidator = StateValidator.getInstance();
         stateValidator.loginConflictValidate(userId.getValue());
 
-        userValidator.userIdExistenceValidate(userId.getValue());
-
-        PasswordValidator passwordValidator = PasswordValidator.getInstance();
-        passwordValidator.rightPasswordValidate(password.getValue(), userId.getValue());
+        UserPasswordValidator userPasswordValidator = UserPasswordValidator.getInstance();
+        userPasswordValidator.rightPasswordValidate(password.getValue(), userId.getValue());
     }
 }

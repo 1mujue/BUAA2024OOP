@@ -12,16 +12,12 @@ import java.util.regex.Pattern;
  * &#064;Created MuJue
  */
 public class CourseName extends Token<String>{
-    private static final String regex = "[A-Za-z]([a-zA-Z0-9_-]*)";
+    private static final String regex = "[A-Za-z]([a-zA-Z0-9_-]{0,19})";
     public CourseName(String courseName){
         this.value= courseName;
     }
     @Override
     public void validate() throws ValidationException {
-        int length = value.length();
-        if(length < 1 || length > 20){
-            throw new ValidationException("Illegal course name\n");
-        }
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(value);
         if(!matcher.matches()){

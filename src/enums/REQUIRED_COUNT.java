@@ -19,7 +19,7 @@ public enum REQUIRED_COUNT {
     SWITCH_COUNT(1, 1,"switch"),
     INPUT_COURSE_BATCH_COUNT(1, 1,"inputCourseBatch"),
     OUTPUT_COURSE_BATCH_COUNT(1, 1,"outputCourseBatch"),
-    LIST_COURSE_SCHEDULE(0, 1,"listCourse"),
+    LIST_COURSE_SCHEDULE(0, 1,"listCourseSchedule"),
     LIST_STUDENT_COUNT(1, 1,"listStudent"),
     REMOVE_STUDENT_COUNT(1, 2,"removeStudent"),
     UPLOAD_COURSE_SCHEDULE_COUNT(1, 1,"uploadCourseSchedule"),

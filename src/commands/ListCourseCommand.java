@@ -6,6 +6,9 @@ import exceptions.ValidationException;
 import executors.CourseExecutor;
 import utils.Outputer;
 import validators.*;
+import validators.courseValidators.CourseExistenceValidator;
+import validators.userValidators.UserPermissionValidator;
+import validators.userValidators.UserIdValidator;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,19 +20,24 @@ import java.util.List;
  * &#064;Created MuJue
  */
 public class ListCourseCommand extends BaseCommand{
-    private UserId userId;
+    private UserId userId = null;
+    private static final ListCourseCommand listCourseCommand = new ListCourseCommand();
+    private ListCourseCommand(){;}
+    public static ListCourseCommand getInstance(){
+        return listCourseCommand;
+    }
     @Override
     public void execute() throws ExecutionException {
-        int count = parameters.size();
         CourseExecutor courseExecutor = CourseExecutor.getInstance();
         String message;
         if(count == 0){
             message = courseExecutor.listCourse();
         }else {
-            String tid = (String)parameters.get(0);
+            String tid = userId.getValue();
             message = courseExecutor.listCourse(tid);
         }
-        Outputer.PRINT(message);
+        Outputer outputer = Outputer.getInstance();
+        outputer.PRINT(message);
     }
 
     @Override
@@ -43,29 +51,33 @@ public class ListCourseCommand extends BaseCommand{
         if(count == 0){
             noArgsValidate();
         }else{
-            adminArgsValidate();
+            userId = new UserId(parameters.get(0));
+            oneArgsValidate();
         }
 
     }
     public void noArgsValidate() throws ValidationException{
-        PermissionValidator permissionValidator = PermissionValidator.getInstance();
-        permissionValidator.legalityValidate(Arrays.asList("Student","Teacher","Administrator"));
+        UserPermissionValidator userPermissionValidator = UserPermissionValidator.getInstance();
+        userPermissionValidator.legalityValidate(Arrays.asList(
+                "Student",
+                "Teacher",
+                "Administrator"
+        ));
 
-        CourseValidator courseValidator = CourseValidator.getInstance();
-        courseValidator.isCourseExist();
+        CourseExistenceValidator courseExistenceValidator = CourseExistenceValidator.getInstance();
+        courseExistenceValidator.isAnyCourseExist();
     }
-    public void adminArgsValidate() throws ValidationException{
-        userId  = new UserId(parameters.get(0));
+    public void oneArgsValidate() throws ValidationException {
+        UserPermissionValidator userPermissionValidator = UserPermissionValidator.getInstance();
+        userPermissionValidator.legalityValidate(List.of("Administrator"));
 
-        PermissionValidator permissionValidator = PermissionValidator.getInstance();
-        permissionValidator.legalityValidate(List.of("Administrator"));
+        UserIdValidator userIdValidator = UserIdValidator.getInstance();
+        userIdValidator.tokenValidate(userId);
+        userIdValidator.userIdExistenceValidate(userId.getValue());
 
-        UserValidator userValidator = UserValidator.getInstance();
-        userValidator.userIdExistenceValidate(userId.getValue());
+        userPermissionValidator.legalityValidate(userId.getValue(), List.of("Teacher"));
 
-        permissionValidator.legalityValidate(userId.getValue(), List.of("Teacher"));
-
-        CourseValidator courseValidator = CourseValidator.getInstance();
-        courseValidator.isCourseExist();
+        CourseExistenceValidator courseExistenceValidator = CourseExistenceValidator.getInstance();
+        courseExistenceValidator.isCertainTeacherAnyCourseExist(userId.getValue());
     }
 }

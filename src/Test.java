@@ -1,9 +1,8 @@
 import commands.BaseCommand;
-import utils.CommandAnalyzer;
-import utils.CommandExecutor;
-import utils.Outputer;
-import utils.ScannerBuilder;
+import enums.PATH;
+import utils.*;
 
+import java.io.File;
 import java.util.*;
 
 /**
@@ -14,18 +13,22 @@ import java.util.*;
  */
 public class Test {
     private static Scanner scanner;
-    private static CommandAnalyzer commandAnalyzer;
-    private static CommandExecutor commandExecutor;
-    private static List<String> parameters = new ArrayList<>();
+    private static final ScannerBuilder scannerBuilder = ScannerBuilder.getInstance();
+    private static final Outputer outputer = Outputer.getInstance();
+    private static final FileOperator fileOperator = FileOperator.getInstance();
+    private static final CommandAnalyzer commandAnalyzer = CommandAnalyzer.getInstance();
+    private static final CommandExecutor commandExecutor = CommandExecutor.getInstance();
+    private static final List<String> parameters = new ArrayList<>();
     private static void init(){
-        ScannerBuilder.setPath("./src/in.txt");
-        Outputer.setPath("./src/out.txt");
-        scanner = ScannerBuilder.getScanner();
-        commandAnalyzer = CommandAnalyzer.getInstance();
-        commandExecutor = CommandExecutor.getInstance();
+        scannerBuilder.setPath(PATH.IN.getPath());
+        outputer.setPath(PATH.OUT.getPath());
+        outputer.setMode(false);
+        scanner = scannerBuilder.getScanner();
     }
     public static void main(String[] args){
         init();
+        fileOperator.createDirectory(PATH.DATA.getPath());
+
         while(scanner.hasNextLine()){
             String line = scanner.nextLine();
             String[] tmp = line.split("\\s+");
@@ -34,7 +37,12 @@ public class Test {
                 parameters.addAll(Arrays.asList(tmp));
                 BaseCommand command = commandAnalyzer.analyzeCommand(parameters);
                 commandExecutor.executeCommand(command);
+                if(command != null){
+                    command.clean();
+                }
             }
         }
+
+        fileOperator.deleteDirectory(PATH.DATA.getPath());
     }
 }

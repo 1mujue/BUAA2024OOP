@@ -28,12 +28,12 @@ public class CourseId extends Token<String>{
         if(length < 3){
             throw new ValidationException("Illegal course id\n");
         }
-        if(value.charAt(0) != 'C' && value.charAt(1) != '-'){
+        if(value.charAt(0) != 'C' || value.charAt(1) != '-'){
             throw new ValidationException("Illegal course id\n");
         }
         for(int i = 2;i < length;++i){
             char ch = value.charAt(i);
-            if(!isNumber(ch)){
+            if(!isNumber(ch) || (i == 2 && ch == '0')){
                 throw new ValidationException("Illegal course id\n");
             }
         }

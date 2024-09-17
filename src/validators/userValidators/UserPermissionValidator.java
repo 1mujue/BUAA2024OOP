@@ -1,25 +1,26 @@
-package validators;
+package validators.userValidators;
 
 import entity.User;
 import entity.tokens.Permission;
 import exceptions.ValidationException;
 import manipulators.StateManipulator;
 import manipulators.UserManipulator;
+import validators.TokenValidator;
 
 import java.util.List;
 
 /**
- * &#064;Classname PermissionValidator
+ * &#064;Classname UserPermissionValidator
  * &#064;Description  TODO
  * &#064;Date 2024/9/4 18:34
  * &#064;Created MuJue
  */
-public class PermissionValidator{
+public class UserPermissionValidator extends TokenValidator {
     private static final UserManipulator userManipulator = UserManipulator.getInstance();
     private static final StateManipulator stateManipulator = StateManipulator.getInstance();
-    private static final PermissionValidator permissionValidator = new PermissionValidator();
-    private  PermissionValidator(){;}
-    public static PermissionValidator getInstance(){
+    private static final UserPermissionValidator permissionValidator = new UserPermissionValidator();
+    private UserPermissionValidator(){;}
+    public static UserPermissionValidator getInstance(){
         return permissionValidator;
     }
 

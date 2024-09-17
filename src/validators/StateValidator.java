@@ -18,24 +18,22 @@ public class StateValidator{
     public static StateValidator getInstance(){
         return stateValidator;
     }
-    private boolean isOnline(String uid){
-        return userManipulator.isUserOnline(uid);
-    }
     public void loginConflictValidate(String uid) throws ValidationException{
-        String id = stateManipulator.getStateId();
-        if(id != null && id.equals(uid)){
+        if(isUserOnline(uid)){
             throw new ValidationException(uid + " is online\n");
         }
     }
     public void onlineValidate(String uid) throws ValidationException{
-        if(!isOnline(uid)){
-            throw new ValidationException(uid + " is online\n");
+        if(!isUserOnline(uid)){
+            throw new ValidationException(uid + " is not online\n");
         }
     }
     public void onlineValidate() throws ValidationException{
-        if(!isOnline(stateManipulator.getStateId())){
+        if(!isUserOnline(stateManipulator.getStateId())){
             throw new ValidationException("No one is online\n");
         }
     }
-
+    private boolean isUserOnline(String uid){
+        return userManipulator.isUserOnline(uid);
+    }
 }

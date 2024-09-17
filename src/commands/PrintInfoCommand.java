@@ -1,17 +1,15 @@
 package commands;
 
-import entity.User;
 import entity.tokens.UserId;
 import exceptions.ExecutionException;
 import exceptions.ValidationException;
 import executors.UserExecutor;
 import utils.Outputer;
 import validators.ArgumentCountValidator;
-import validators.PermissionValidator;
+import validators.userValidators.UserPermissionValidator;
 import validators.StateValidator;
-import validators.UserValidator;
+import validators.userValidators.UserIdValidator;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,7 +20,12 @@ import java.util.List;
  * &#064;Created MuJue
  */
 public class PrintInfoCommand extends BaseCommand{
-    private UserId userId;
+    private UserId userId = null;
+    private static final PrintInfoCommand printInfoCommand = new PrintInfoCommand();
+    private PrintInfoCommand(){;}
+    public static PrintInfoCommand getInstance(){
+        return printInfoCommand;
+    }
     @Override
     public void execute() throws ExecutionException {
         UserExecutor userExecutor = UserExecutor.getInstance();
@@ -33,7 +36,8 @@ public class PrintInfoCommand extends BaseCommand{
         else if (count == 1){
             message = userExecutor.printInfo(userId.getValue());
         }
-        Outputer.PRINT(message);
+        Outputer outputer = Outputer.getInstance();
+        outputer.PRINT(message);
     }
 
     @Override
@@ -47,27 +51,24 @@ public class PrintInfoCommand extends BaseCommand{
         if(count == 0){
             noArgsValidate();
         } else if(count == 1){
-            adminArgsValidate();
+            userId = new UserId(parameters.get(0));
+            oneArgsValidate();
         }
     }
     private void noArgsValidate() throws ValidationException{
-        PermissionValidator permissionValidator = PermissionValidator.getInstance();
-        permissionValidator.legalityValidate(Arrays.asList(
+        UserPermissionValidator userPermissionValidator = UserPermissionValidator.getInstance();
+        userPermissionValidator.legalityValidate(Arrays.asList(
                 "Student",
                 "Teacher",
                 "Administrator"
         ));
-
-        StateValidator stateValidator = StateValidator.getInstance();
-        stateValidator.onlineValidate();
     }
-    private void adminArgsValidate() throws ValidationException{
-        userId = new UserId(parameters.get(0));
+    private void oneArgsValidate() throws ValidationException{
+        UserPermissionValidator userPermissionValidator = UserPermissionValidator.getInstance();
+        userPermissionValidator.legalityValidate(List.of("Administrator"));
 
-        PermissionValidator permissionValidator = PermissionValidator.getInstance();
-        permissionValidator.legalityValidate(List.of("Administrator"));
-
-        UserValidator userValidator = UserValidator.getInstance();
-        userValidator.userIdExistenceValidate(userId.getValue());
+        UserIdValidator userIdValidator = UserIdValidator.getInstance();
+        userIdValidator.tokenValidate(userId);
+        userIdValidator.userIdExistenceValidate(userId.getValue());
     }
 }

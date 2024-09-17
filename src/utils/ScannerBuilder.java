@@ -12,29 +12,21 @@ import java.util.Scanner;
  * &#064;Created MuJue
  */
 public class ScannerBuilder {
-    private static String path = null;
-    private static Scanner scanner = null;
-    public static void setPath(String path){
-        if(scanner != null){
-            scanner.close();
-            scanner = null;
-        }
-        ScannerBuilder.path = path;
-    }
+    private static final ScannerBuilder scannerBuilder = new ScannerBuilder();
     private ScannerBuilder(){;}
-    public static Scanner getScanner(){
-        if(scanner == null){
-            if(path == null){
-                scanner = new Scanner(System.in);
-            }
-            else{
-                try {
-                    scanner = new Scanner(new FileInputStream(new File(path)));
-                } catch (FileNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+    public static ScannerBuilder getInstance(){
+        return scannerBuilder;
+    }
+    private String path = null;
+    public void setPath(String path){
+        scannerBuilder.path = path;
+    }
+
+    public Scanner getScanner(){
+        try {
+            return new Scanner(new FileInputStream(path));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
         }
-        return scanner;
     }
 }

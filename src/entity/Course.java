@@ -1,9 +1,6 @@
 package entity;
 
-import executors.CourseExecutor;
-import utils.TokenHandler;
-
-import java.util.List;
+import java.io.Serializable;
 
 /**
  * &#064;Classname Course
@@ -11,9 +8,9 @@ import java.util.List;
  * &#064;Date 2024/9/7 23:15
  * &#064;Created MuJue
  */
-public class Course {
+public class Course implements Serializable {
     private static int globalCourseId = 1;
-    private final int id;
+    private transient Integer id;
     private final String name;
     private final int weekTime;
     private final int fromTime;
@@ -30,8 +27,13 @@ public class Course {
         this.credit = credit;
         this.durationTime = durationTime;
     }
-    public int getId() {
+
+
+    public Integer getId() {
         return id;
+    }
+    public void setId(){
+        this.id = globalCourseId++;
     }
 
     public String getName() {

@@ -1,129 +1,208 @@
 package manipulators;
 
-import com.sun.jdi.IntegerType;
-import data.CourseData;
 import data.UserCourseData;
-import data.UserData;
+import entity.Course;
 
-import java.net.Inet4Address;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
- * &#064;Classname UserCourseManipulator
+ * &#064;Classname UserCourseExecutor
  * &#064;Description  TODO
  * &#064;Date 2024/9/7 23:23
  * &#064;Created MuJue
  */
 public class UserCourseManipulator {
     private static final UserCourseData userCourseData = UserCourseData.getInstance();
+    private static final CourseManipulator courseManipulator = CourseManipulator.getInstance();
     private static final UserCourseManipulator userCourseManipulator = new UserCourseManipulator();
     private UserCourseManipulator(){;}
     public static UserCourseManipulator getInstance(){
         return userCourseManipulator;
     }
-    public void createTeacherCourse(String tid, int cid){
-        HashMap<Integer, String> teacherCourse = userCourseData.getTeacherCourse();
-        teacherCourse.put(cid, tid);
+    public void createTeacherCourse(String tid, Integer cid){
+        HashMap<String, List<Integer>> teacherCourse = userCourseData.getTeacherCourse();
+        insertUserCourse(teacherCourse, tid, cid);
     }
-    public void selectStudentCourse(String sid, int cid){
-        HashMap<Integer, String> studentCourse = userCourseData.getStudentCourse();
-        studentCourse.put(cid, sid);
+    public void selectStudentCourse(String sid, Integer cid){
+        HashMap<String, List<Integer>> studentCourse = userCourseData.getStudentCourse();
+        insertUserCourse(studentCourse, sid, cid);
     }
-    public void removeTeacherCourse(String tid, int cid){
-        HashMap<Integer, String> teacherCourse = userCourseData.getTeacherCourse();
-        teacherCourse.remove(cid, tid);
+    private void insertUserCourse(HashMap<String, List<Integer>> userCourse, String uid, int cid){
+        if(userCourse.containsKey(uid)){
+            userCourse.get(uid).add(cid);
+        } else{
+            userCourse.put(uid, new ArrayList<Integer>(List.of(cid)));
+        }
     }
-    public void removeTeacherCourse(int cid){
-        HashMap<Integer, String> teacherCourse = userCourseData.getTeacherCourse();
-        teacherCourse.remove(cid);
-    }
-    public void removeStudentCourse(String sid, int cid){
-        HashMap<Integer, String> studentCourse = userCourseData.getTeacherCourse();
-        studentCourse.remove(cid, sid);
-    }
-    public void removeStudentCourse(int cid){
-        HashMap<Integer, String> studentCourse = userCourseData.getTeacherCourse();
-        studentCourse.remove(cid);
-    }
+
     public List<Integer> getTeacherCourse(String tid){
         List<Integer> courses = new ArrayList<>();
-        HashMap<Integer, String> teacherCourse = userCourseData.getTeacherCourse();
-        for(Map.Entry<Integer,String> entry : teacherCourse.entrySet()){
-            if(entry.getValue().equals(tid)){
-                courses.add(entry.getKey());
+        HashMap<String, List<Integer>> teacherCourse = userCourseData.getTeacherCourse();
+        for(Map.Entry<String, List<Integer>> entry : teacherCourse.entrySet()){
+            if(entry.getKey().equals(tid)){
+                courses.addAll(entry.getValue());
             }
         }
         return courses;
     }
     public int getTeacherCourseNumber(String tid){
-        int ans = 0;
-        HashMap<Integer, String> teacherCourse = userCourseData.getTeacherCourse();
-        for(Map.Entry<Integer,String> entry : teacherCourse.entrySet()){
-            if(entry.getValue().equals(tid)){
-                ans++;
+        HashMap<String, List<Integer>> teacherCourse = userCourseData.getTeacherCourse();
+        return getCourseNumber(teacherCourse, tid);
+    }
+    public Integer getStudentCourseNumber(String sid){
+        HashMap<String, List<Integer>> studentCourse = userCourseData.getStudentCourse();
+        return getCourseNumber(studentCourse, sid);
+    }
+    private Integer getCourseNumber(HashMap<String, List<Integer>> userCourse, String uid){
+        int count = 0;
+        for(Map.Entry<String, List<Integer>> entry : userCourse.entrySet()){
+            if(entry.getKey().equals(uid)){
+                count = entry.getValue().size();
             }
         }
-        return ans;
+        return count;
     }
-    public String getTeacherCourseTid(int cid){
+    public String getTeacherCourseTid(Integer cid){
         String tid = null;
-        HashMap<Integer, String> teacherCourse = userCourseData.getTeacherCourse();
-        for(Map.Entry<Integer,String> entry : teacherCourse.entrySet()){
-            if(entry.getKey().equals(cid)){
-                tid = entry.getValue();
-                break;
+        HashMap<String, List<Integer>> teacherCourse = userCourseData.getTeacherCourse();
+        for(Map.Entry<String, List<Integer>> entry : teacherCourse.entrySet()){
+            if(entry.getValue().contains(cid)){
+                tid = entry.getKey();
+                break; // C-X can ONLY belong to one teacher.
             }
         }
         return tid;
     }
+    public List<String> getStudentCourseSid(Integer cid){
+        List<String> sids = new ArrayList<>();
+        HashMap<String, List<Integer>> studentCourse = userCourseData.getStudentCourse();
+        for(Map.Entry<String, List<Integer>> entry : studentCourse.entrySet()){
+            if(entry.getValue().contains(cid)){
+                sids.add(entry.getKey());
+            }
+        }
+        return sids;
+    }
     public List<Integer> getStudentCourse(String sid){
         List<Integer> courses = new ArrayList<>();
-        HashMap<Integer, String> studentCourse = userCourseData.getStudentCourse();
-        for(Map.Entry<Integer,String> entry : studentCourse.entrySet()){
-            if(entry.getValue().equals(sid)){
-                courses.add(entry.getKey());
+        HashMap<String, List<Integer>> studentCourse = userCourseData.getStudentCourse();
+        for(Map.Entry<String, List<Integer>> entry : studentCourse.entrySet()){
+            if(entry.getKey().equals(sid)){
+                courses.addAll(entry.getValue());
             }
         }
         return courses;
     }
-    public Integer getStudentCourseNumber(String sid){
+
+    public Integer getCourseSelectedNumber(int cid){
         int count = 0;
-        HashMap<Integer, String> studentCourse = userCourseData.getStudentCourse();
-        for(Map.Entry<Integer,String> entry : studentCourse.entrySet()){
-            if(entry.getValue().equals(sid)){
+        HashMap<String, List<Integer>> studentCourse = userCourseData.getStudentCourse();
+        for(Map.Entry<String, List<Integer>> entry : studentCourse.entrySet()){
+            if(entry.getValue().contains(cid)){
                 count++;
             }
         }
         return count;
     }
     public boolean isTeacherCourseExist(String tid){
-        HashMap<Integer, String> teacherCourse = userCourseData.getTeacherCourse();
-        for(Map.Entry<Integer, String> entry : teacherCourse.entrySet()){
-            if(entry.getValue().equals(tid)){
-                return true;
-            }
-        }
-        return false;
+        HashMap<String, List<Integer>> teacherCourse = userCourseData.getTeacherCourse();
+        return isCourseExist(teacherCourse, tid);
     }
     public boolean isStudentCourseExist(String sid){
-        HashMap<Integer, String> studentCourse = userCourseData.getStudentCourse();
-        for(Map.Entry<Integer, String> entry: studentCourse.entrySet()){
-            if(entry.getValue().equals(sid)){
+        HashMap<String, List<Integer>> studentCourse = userCourseData.getStudentCourse();
+        return isCourseExist(studentCourse, sid);
+    }
+    private boolean isCourseExist(HashMap<String, List<Integer>> userCourse, String uid){
+        for(Map.Entry<String, List<Integer>> entry: userCourse.entrySet()){
+            if(entry.getKey().equals(uid) && !entry.getValue().isEmpty()){
                 return true;
             }
         }
         return false;
     }
     public boolean isTeacherCourseExist(String tid, int cid){
-        HashMap<Integer, String> teacherCourse = userCourseData.getTeacherCourse();
-        for(Map.Entry<Integer, String> entry : teacherCourse.entrySet()){
-            if(entry.getKey().equals(cid) && entry.getValue().equals(tid)){
+        HashMap<String, List<Integer>> teacherCourse = userCourseData.getTeacherCourse();
+        return isCourseExist(teacherCourse, tid, cid);
+    }
+    public boolean isStudentCourseExist(String sid, int cid){
+        HashMap<String, List<Integer>> studentCourse = userCourseData.getStudentCourse();
+        return isCourseExist(studentCourse, sid, cid);
+    }
+    private boolean isCourseExist(HashMap<String, List<Integer>> userCourse, String uid, int cid){
+        for(Map.Entry<String, List<Integer>> entry : userCourse.entrySet()){
+            if(entry.getKey().equals(uid) && entry.getValue().contains(cid)){
                 return true;
             }
         }
         return false;
+    }
+    public boolean isTeacherCourseNameExist(String tid, String name){
+        HashMap<String, List<Integer>> teacherCourse = userCourseData.getTeacherCourse();
+        for(Map.Entry<String, List<Integer>> entry : teacherCourse.entrySet()) {
+            if(entry.getKey().equals(tid)){
+                List<Integer> cids = entry.getValue();
+                for(Integer cid : cids){
+                    Course course = courseManipulator.getCourseById(cid);
+                    if(name.equals(course.getName())){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    public boolean isTeacherCourseTimeConflict(String tid, int weekTime, int fromTime, int toTime){
+        HashMap<String, List<Integer>> teacherCourse = userCourseData.getTeacherCourse();
+        return isCourseTimeConflict(teacherCourse, tid, weekTime, fromTime, toTime);
+    }
+    public boolean isStudentCourseTimeConflict(String sid, int weekTime, int fromTime, int toTime){
+        HashMap<String, List<Integer>> studentCourse = userCourseData.getStudentCourse();
+        return isCourseTimeConflict(studentCourse, sid, weekTime, fromTime, toTime);
+    }
+    private boolean isCourseTimeConflict(HashMap<String, List<Integer>> userCourses, String uid, int weekTime, int fromTime, int toTime){
+        for(Map.Entry<String, List<Integer>> entry : userCourses.entrySet()) {
+            if(entry.getKey().equals(uid)){
+                List<Integer> cids = entry.getValue();
+                for(Integer cid : cids){
+                    Course course = courseManipulator.getCourseById(cid);
+                    int tempWeekTime = course.getWeekTime();
+                    if(tempWeekTime == weekTime){
+                        int tempFromTime = course.getFromTime();
+                        int tempToTime = course.getToTime();
+                        if(fromTime >= tempFromTime && fromTime <= tempToTime){
+                            return true;
+                        }
+                        if(toTime >= tempFromTime && toTime <= tempToTime){
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    public void removeAnyTeacherCertainCourse(Integer cid){
+        HashMap<String, List<Integer>> teacherCourse = userCourseData.getTeacherCourse();
+        for(Map.Entry<String, List<Integer>> entry : teacherCourse.entrySet()){
+            if(entry.getValue().contains(cid)){
+                entry.getValue().remove(cid);
+                break; // C-X can ONLY belong to one teacher.
+            }
+        }
+    }
+    public void removeAnyStudentCertainCourse(Integer cid){
+        HashMap<String, List<Integer>> studentCourse = userCourseData.getStudentCourse();
+        for(Map.Entry<String, List<Integer>> entry : studentCourse.entrySet()){
+            entry.getValue().remove(cid);
+        }
+    }
+    public void removeCertainStudentCertainCourse(String uid, Integer cid){
+        HashMap<String, List<Integer>> studentCourse = userCourseData.getStudentCourse();
+        for(Map.Entry<String, List<Integer>> entry : studentCourse.entrySet()){
+            if(entry.getKey().equals(uid)){
+                entry.getValue().remove(cid);
+                break;
+            }
+        }
     }
 }

@@ -10,6 +10,10 @@ import executors.UserExecutor;
 import entity.User;
 import utils.Outputer;
 import validators.*;
+import validators.userValidators.UserNameValidator;
+import validators.userValidators.UserPasswordValidator;
+import validators.userValidators.UserPermissionValidator;
+import validators.userValidators.UserIdValidator;
 
 /**
  * &#064;Classname RegisterCommand
@@ -18,11 +22,16 @@ import validators.*;
  * &#064;Created MuJue
  */
 public class RegisterCommand extends BaseCommand{
-    private UserId userId;
-    private UserName userName;
-    private Password password;
-    private Password rePassword;
-    private Permission permission;
+    private UserId userId = null;
+    private UserName userName = null;
+    private Password password = null;
+    private Password rePassword = null;
+    private Permission permission = null;
+    private static final RegisterCommand registerCommand = new RegisterCommand();
+    private RegisterCommand(){;}
+    public static RegisterCommand getInstance(){
+        return registerCommand;
+    }
     @Override
     public void execute() throws ExecutionException {
         User user = new User();
@@ -34,7 +43,8 @@ public class RegisterCommand extends BaseCommand{
 
         UserExecutor userExecutor = UserExecutor.getInstance();
         String message = userExecutor.register(user);
-        Outputer.PRINT(message);
+        Outputer outputer = Outputer.getInstance();
+        outputer.PRINT(message);
     }
 
     @Override
@@ -48,19 +58,18 @@ public class RegisterCommand extends BaseCommand{
         rePassword = new Password(parameters.get(3));
         permission = new Permission(parameters.get(4));
 
-        UserValidator userValidator = UserValidator.getInstance();
-        userValidator.userTokenValidate(userId);
-        userValidator.userIdRegisterExistenceValidate(userId.getValue());
+        UserIdValidator userIdValidator = UserIdValidator.getInstance();
+        userIdValidator.tokenValidate(userId);
+        userIdValidator.userIdRegisterExistenceValidate(userId.getValue());
 
-        NameValidator nameValidator = NameValidator.getInstance();
-        nameValidator.userNameLegalityValidate(userName.getValue());
+        UserNameValidator userNameValidator = UserNameValidator.getInstance();
+        userNameValidator.userNameLegalityValidate(userName.getValue());
 
-        PasswordValidator passwordValidator = PasswordValidator.getInstance();
-        passwordValidator.legalityValidate(password.getValue());
+        UserPasswordValidator userPasswordValidator = UserPasswordValidator.getInstance();
+        userPasswordValidator.tokenValidate(password);
+        userPasswordValidator.samePasswordValidate(password.getValue(), rePassword.getValue());
 
-        passwordValidator.samePasswordValidate(password.getValue(), rePassword.getValue());
-
-        PermissionValidator permissionValidator = PermissionValidator.getInstance();
-        permissionValidator.existenceValidate(permission);
+        UserPermissionValidator userPermissionValidator = UserPermissionValidator.getInstance();
+        userPermissionValidator.existenceValidate(permission);
     }
 }

@@ -2,6 +2,7 @@ package data;
 
 import entity.Course;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  * &#064;Date 2024/9/7 23:18
  * &#064;Created MuJue
  */
-public class CourseData {
+public class CourseData implements Serializable {
     private static final CourseData courseData = new CourseData();
     private CourseData(){;}
     public static CourseData getInstance(){

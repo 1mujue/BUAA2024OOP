@@ -1,6 +1,7 @@
 package executors;
 
 import entity.Course;
+import entity.TeacherCourse;
 import entity.User;
 import exceptions.ExecutionException;
 import manipulators.CourseManipulator;
@@ -35,49 +36,70 @@ public class CourseExecutor {
         return "Create course success (courseId: C-" + cid + ")\n";
     }
     public String listCourse() throws ExecutionException{
-        String permission = stateManipulator.getStatePermission();
-        List<Course> courses = new ArrayList<>();
         StringBuilder message = new StringBuilder();
+        String permission = stateManipulator.getStatePermission();
         if(permission.equals("Teacher")){
             String tid = stateManipulator.getStateId();
             List<Integer> cids = userCourseManipulator.getTeacherCourse(tid);
+            cids.sort(Integer::compareTo);
             for(Integer cid : cids){
-                courses.add(courseManipulator.getCourseById(cid));
-            }
-            for(Course course : courses){
+                Course course = courseManipulator.getCourseById(cid);
                 message.append(course.toString());
             }
+            return message.toString();
         }
         else{
-            courses = courseManipulator.getCourses();
+            List<TeacherCourse> teacherCourses = new ArrayList<>();
+            List<Course> courses = courseManipulator.getCourses();
             for(Course course : courses){
                 String tid = userCourseManipulator.getTeacherCourseTid(course.getId());
                 String tName = userManipluator.getUserById(tid).getName();
-                message.append(tName).append(" ").append(course.toString());
+                teacherCourses.add(new TeacherCourse(tName, course));
             }
+            return getCourseSorted(message, teacherCourses).append("List course success\n").toString();
         }
-
-        return message.toString();
     }
     public String listCourse(String tid) throws ExecutionException{
+        StringBuilder message = new StringBuilder();
         List<Integer> cids = userCourseManipulator.getTeacherCourse(tid);
         User teacher = userManipluator.getUserById(tid);
-        StringBuilder message = new StringBuilder();
+        String tName = teacher.getName();
+        List<TeacherCourse> teacherCourses = new ArrayList<>();
         for(Integer cid : cids){
             Course course = courseManipulator.getCourseById(cid);
-            message.append(teacher.getName()).append(" ").append(course.toString());
+            TeacherCourse teacherCourse = new TeacherCourse(tName, course);
+            teacherCourses.add(teacherCourse);
         }
-        return message.toString();
+        return getCourseSorted(message, teacherCourses).append("List course success\n").toString();
+    }
+    private StringBuilder getCourseSorted(StringBuilder message, List<TeacherCourse> teacherCourses) {
+        teacherCourses.sort((o1, o2) -> {
+            if(o1.gettName().equals(o2.gettName())){
+                return o1.getCourse().getId().compareTo(o2.getCourse().getId());
+            } else {
+                return o1.gettName().compareTo(o2.gettName());
+            }
+        });
+        for(TeacherCourse teacherCourse : teacherCourses){
+            message.append(teacherCourse.toString());
+        }
+        return message;
     }
     public String selectCourse(int cid) throws ExecutionException{
         String sid = stateManipulator.getStateId();
         userCourseManipulator.selectStudentCourse(sid, cid);
-        return "Select course success\n";
+        return "Select course success (courseId: C-" + cid + ")\n";
     }
     public String cancelCourse(int cid) throws ExecutionException{
-        userCourseManipulator.removeTeacherCourse(cid);
-        userCourseManipulator.removeStudentCourse(cid);
-        courseManipulator.removeCourse(cid);
-        return "Cancel course success\n";
+        String permission = stateManipulator.getStatePermission();
+        String uid = stateManipulator.getStateId();
+        if(permission.equals("Teacher") || permission.equals("Administrator")){
+            userCourseManipulator.removeAnyTeacherCertainCourse(cid);
+            courseManipulator.removeCourse(cid);
+            userCourseManipulator.removeAnyStudentCertainCourse(cid);
+        } else if(permission.equals("Student")){
+            userCourseManipulator.removeCertainStudentCertainCourse(uid, cid);
+        }
+        return "Cancel course success (courseId: C-" + cid + ")\n";
     }
 }

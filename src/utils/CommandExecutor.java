@@ -10,7 +10,8 @@ import exceptions.ExecutionException;
  * &#064;Created MuJue
  */
 public class CommandExecutor {
-    private static CommandExecutor commandExecutor = new CommandExecutor();
+    private static final CommandExecutor commandExecutor = new CommandExecutor();
+    private static final Outputer outputer = Outputer.getInstance();
     public static CommandExecutor getInstance(){
         return commandExecutor;
     }
@@ -21,7 +22,7 @@ public class CommandExecutor {
                 command.execute();
             }
         } catch (ExecutionException e) {
-            Outputer.PRINT(e.getMessage());
+            outputer.PRINT(e.getMessage());
         }
     }
 }

@@ -5,11 +5,10 @@ import exceptions.ExecutionException;
 import exceptions.ValidationException;
 import executors.CourseExecutor;
 import utils.Outputer;
-import utils.TokenHandler;
-import validators.ArgumentCountValidator;
-import validators.CourseValidator;
-import validators.PermissionValidator;
-import validators.StateValidator;
+import validators.*;
+import validators.courseValidators.CourseCancelValidator;
+import validators.courseValidators.CourseExistenceValidator;
+import validators.userValidators.UserPermissionValidator;
 
 import java.util.Arrays;
 
@@ -20,13 +19,19 @@ import java.util.Arrays;
  * &#064;Created MuJue
  */
 public class CancelCourseCommand extends BaseCommand{
-    private CourseId courseId;
+    private static final CancelCourseCommand cancelCourseCommand = new CancelCourseCommand();
+    private CancelCourseCommand(){;}
+    public static CancelCourseCommand getInstance(){
+        return cancelCourseCommand;
+    }
+    private CourseId courseId = null;
     @Override
     public void execute() throws ExecutionException {
         int cid = courseId.getCourseId();
         CourseExecutor courseExecutor = CourseExecutor.getInstance();
         String message = courseExecutor.cancelCourse(cid);
-        Outputer.PRINT(message);
+        Outputer outputer = Outputer.getInstance();
+        outputer.PRINT(message);
     }
 
     @Override
@@ -34,16 +39,21 @@ public class CancelCourseCommand extends BaseCommand{
         ArgumentCountValidator argumentCountValidator = ArgumentCountValidator.getInstance();
         argumentCountValidator.legalityValidate(count, "cancelCourse");
 
-        courseId = new CourseId(parameters.get(0));
-        CourseValidator courseValidator = CourseValidator.getInstance();
-        courseValidator.courseTokenValidate(courseId);
-
         StateValidator stateValidator = StateValidator.getInstance();
         stateValidator.onlineValidate();
 
-        PermissionValidator permissionValidator = PermissionValidator.getInstance();
-        permissionValidator.legalityValidate(Arrays.asList("Teacher","Administrator"));
+        courseId = new CourseId(parameters.get(0));
+        CourseExistenceValidator courseExistenceValidator = CourseExistenceValidator.getInstance();
+        courseExistenceValidator.tokenValidate(courseId);
 
-        courseValidator.isCourseExist();
+        UserPermissionValidator userPermissionValidator = UserPermissionValidator.getInstance();
+        userPermissionValidator.legalityValidate(Arrays.asList(
+                "Student",
+                "Teacher",
+                "Administrator"
+        ));
+
+        CourseCancelValidator courseCancelValidator = CourseCancelValidator.getInstance();
+        courseCancelValidator.isCurrentCancelCourseExist(courseId);
     }
 }

@@ -15,16 +15,19 @@ public class Password extends Token<String>{
     @Override
     public void validate() throws ValidationException {
         int length = value.length();
+        if(length < 6 || length > 16){
+            throw new ValidationException("Illegal password\n");
+        }
         boolean isSpecial = false, isAlphabet = false, isNumber = false, isLegal = true;
         for(int i = 0;i < length;++i){
             char ch = value.charAt(i);
-            if(!isSpecial && (ch == '@' || ch == '$' || ch == '_' || ch == '%')){
+            if((ch == '@' || ch == '$' || ch == '_' || ch == '%')){
                 isSpecial = true;
             }
-            else if(!isAlphabet && (ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z')){
+            else if((ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z')){
                 isAlphabet = true;
             }
-            else if(!isNumber && (ch >= '0' && ch <= '9')){
+            else if((ch >= '0' && ch <= '9')){
                 isNumber = true;
             }
             else {

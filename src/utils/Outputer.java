@@ -1,9 +1,6 @@
 package utils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * &#064;Classname Outputer
@@ -12,10 +9,15 @@ import java.io.IOException;
  * &#064;Created MuJue
  */
 public class Outputer {
-    private static String path = null;
-    private static FileOutputStream fos = null;
+    private String path = null;
+    private boolean mode = false;
+    private FileOutputStream fos = null;
+    private static final Outputer outputer = new Outputer();
     private Outputer(){;}
-    public static void setPath(String path){
+    public static Outputer getInstance(){
+        return outputer;
+    }
+    public void setPath(String path){
         if(fos != null){
             try {
                 fos.close();
@@ -24,13 +26,22 @@ public class Outputer {
             }
             fos = null;
         }
-        Outputer.path = path;
+        this.path = path;
     }
-    public static void PRINT(String content){
+    public void setMode(Boolean mode){
+        this.mode = mode;
+    }
+    public void PRINT(String content){
         if(fos == null){
             if(path != null){
                 try {
-                    fos = new FileOutputStream(new File(path));
+                    File file = new File(path);
+                    if(!file.exists()){
+                        if(!file.createNewFile()){
+                            throw new IOException();
+                        }
+                    }
+                    fos = new FileOutputStream(path, mode);
                     fos.write(content.getBytes());
                 } catch (IOException e) {
                     throw new RuntimeException(e);

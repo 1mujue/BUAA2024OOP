@@ -16,11 +16,17 @@ import java.util.List;
  * &#064;Created MuJue
  */
 public class QuitCommand extends BaseCommand{
+    private static final QuitCommand quitCommand = new QuitCommand();
+    private QuitCommand(){;}
+    public static QuitCommand getInstance(){
+        return quitCommand;
+    }
     @Override
     public void execute() throws ExecutionException {
         UserExecutor userExecutor = UserExecutor.getInstance();
         String message = userExecutor.quit();
-        Outputer.PRINT(message);
+        Outputer outputer = Outputer.getInstance();
+        outputer.PRINT(message);
     }
 
     @Override

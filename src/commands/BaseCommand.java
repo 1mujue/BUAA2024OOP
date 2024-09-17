@@ -17,7 +17,7 @@ import java.util.List;
  */
 public abstract class BaseCommand implements Executable, Validatable {
     protected int count;
-    protected List<String> parameters;
+    protected List<String> parameters = null;
     public List<String> getParameters() {
         return parameters;
     }
@@ -30,4 +30,9 @@ public abstract class BaseCommand implements Executable, Validatable {
     public void setCount(int count){
         this.count = count;
     }
+    public void clean(){
+        count = 0;
+        parameters = null;
+    }
+
 }
