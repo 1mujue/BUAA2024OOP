@@ -1,5 +1,7 @@
 import commands.BaseCommand;
 import enums.PATH;
+import exceptions.EndException;
+import exceptions.ExecutionException;
 import utils.*;
 
 import java.io.File;
@@ -36,7 +38,11 @@ public class Test {
                 parameters.clear();
                 parameters.addAll(Arrays.asList(tmp));
                 BaseCommand command = commandAnalyzer.analyzeCommand(parameters);
-                commandExecutor.executeCommand(command);
+                try{
+                    commandExecutor.executeCommand(command);
+                }catch (EndException e){
+                    break;
+                }
                 if(command != null){
                     command.clean();
                 }

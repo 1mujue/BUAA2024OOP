@@ -24,7 +24,12 @@ public class ScannerBuilder {
 
     public Scanner getScanner(){
         try {
-            return new Scanner(new FileInputStream(path));
+            if(path == null){
+                return new Scanner(System.in);
+            }
+            else{
+                return new Scanner(new FileInputStream(path));
+            }
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }

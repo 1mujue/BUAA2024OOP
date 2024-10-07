@@ -1,6 +1,7 @@
 package utils;
 
 import commands.BaseCommand;
+import exceptions.EndException;
 import exceptions.ExecutionException;
 
 /**
@@ -16,12 +17,15 @@ public class CommandExecutor {
         return commandExecutor;
     }
     private CommandExecutor(){;}
-    public  void executeCommand(BaseCommand command){
+    public  void executeCommand(BaseCommand command) throws EndException {
         try {
             if(command != null) {
                 command.execute();
             }
         } catch (ExecutionException e) {
+            if(e.getMessage().equals("quit the system.\n")){
+                throw new EndException();
+            }
             outputer.PRINT(e.getMessage());
         }
     }

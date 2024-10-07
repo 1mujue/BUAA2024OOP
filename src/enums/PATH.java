@@ -7,8 +7,10 @@ package enums;
  * &#064;Created MuJue
  */
 public enum PATH {
-    IN("./src/in.txt"),
-    OUT("./src/out.txt"),
+//    IN("./src/in.txt"),
+//    OUT("./src/out.txt"),
+    IN(null),
+    OUT(null),
     DATA("./data/");
     private final String path;
     PATH(String path){

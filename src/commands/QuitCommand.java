@@ -27,6 +27,7 @@ public class QuitCommand extends BaseCommand{
         String message = userExecutor.quit();
         Outputer outputer = Outputer.getInstance();
         outputer.PRINT(message);
+        throw new ExecutionException("quit the system.\n");
     }
 
     @Override

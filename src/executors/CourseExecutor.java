@@ -46,6 +46,7 @@ public class CourseExecutor {
                 Course course = courseManipulator.getCourseById(cid);
                 message.append(course.toString());
             }
+            message.append("List course success\n");
             return message.toString();
         }
         else{
