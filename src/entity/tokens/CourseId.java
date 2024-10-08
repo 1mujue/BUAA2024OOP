@@ -18,7 +18,7 @@ public class CourseId extends Token<String>{
         if(cid == -1){
             TokenHandler tokenHandler = TokenHandler.getInstance();
             tokenHandler.setDividend("-");
-            cid =  tokenHandler.getInteger(value).getFirst();
+            cid =  tokenHandler.getInteger(value).get(0);
         }
         return cid;
     }

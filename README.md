@@ -16,3 +16,14 @@ Validators and Executors would call **Manipulators** to get data and then operat
 Finally, since students haven't learnt database management technique yet, **XXX Data** would serve as tables in a relation database.
 ## What else should you know?
 Although this is a homework, it concentrates my intelligence to design the code structrue as good as possible. When it comes to design pattern, there probably includes **Bridge Pattern, Singleton Pattern, Command Pattern**. The **State Pattern** is excluded while it is the main design pattern when I write the code, but as time passes by, it can be verified that it is not suitable.
+
+However, this version of solution is a **superset** of a standard solution, since another OOP assistant has changed the test case, and the command OpenFile and UploadCourseSchedule are **deleted**.
+
+## How to run this code?
+First, the work directory should be the **father directory** of src.
+
+Second, if you want to use input and output file rather than standard I/O stream, you just need to go to src/enums/PATH,.java, and change **IN** and **OUT** to the path of input file and output file, or **null** to use standard I/O stream.
+
+Third, my code can be run with JDK 17, **BUT** I didn't test other version of JDK. Therefore, if something goes wrong when compiling, then change the version of JDK first.
+
+Forth, click the "Run" button and RUN!!

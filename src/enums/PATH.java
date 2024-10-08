@@ -7,8 +7,10 @@ package enums;
  * &#064;Created MuJue
  */
 public enum PATH {
+//    file stream.
 //    IN("./src/in.txt"),
 //    OUT("./src/out.txt"),
+//    standard I/O stream.
     IN(null),
     OUT(null),
     DATA("./data/");

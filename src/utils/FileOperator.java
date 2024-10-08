@@ -18,7 +18,7 @@ public class FileOperator {
     public void createDirectory(String path){
         File file = new File(path);
         if(file.mkdirs()){
-            System.out.println("Make directory success!");
+            //System.out.println("Make directory success!");
         }
     }
     public void deleteDirectory(String path){
@@ -28,12 +28,12 @@ public class FileOperator {
                 deleteDirectory(file1.getPath());
             } else {
                 if(file1.delete()){
-                    System.out.println("Delete " + file1.getPath() + " success");
+                    //System.out.println("Delete " + file1.getPath() + " success");
                 }
             }
         }
         if(file.delete()){
-            System.out.println("Delete " + file.getPath() + " success");
+            //System.out.println("Delete " + file.getPath() + " success");
         }
     }
 }
